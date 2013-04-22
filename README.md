@@ -9,7 +9,9 @@ Clone this repo:
 $ git clone git@github.com:yonatan/rtl-toolkit.git
 ```
 
-Make sure that the ```rtlxgen``` script is in your executable path, either by changing your $PATH environment variable, or by creating a symlink (*not* a copy - ```rtlxgen``` and ```rtlx.Makefile``` must reside in the same directory):
+Make sure that the ```rtlxgen``` script is in your executable path, either by changing your $PATH environment variable, or by creating a symlink to it.
+
+Note: don't just copy ```rtlxgen```, it needs to be in the same directory as ```rtlx.Makefile``` and ```cssjanus```.
 
 ```bash
 $ ln -s /full/path/to/your/rtlxgen /usr/local/bin/rtlxgen
