@@ -14,16 +14,16 @@ images: $(RTLX_IMG_FILES)
 	cat "$<" | python "$(CSSJANUS)" --ignore_bad_bgp >> "$@"
 
 %-rtlx.jpg: %.jpg
-	convert -flop "$<" "$@"
+	gm convert -flop "$<" "$@"
 
 %-rtlx.jpeg: %.jpeg
-	convert -flop "$<" "$@"
+	gm convert -flop "$<" "$@"
 
 %-rtlx.png: %.png
-	convert -flop "$<" "$@"
+	gm convert -flop "$<" "$@"
 
 %-rtlx.gif: %.gif
-	convert -flop "$<" "$@"
+	gm convert -flop "$<" "$@"
 
 clean:
 	rm "$(RTLX_CSS_FILES)"

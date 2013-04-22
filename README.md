@@ -16,9 +16,9 @@ You might want to add ```rtlxgen``` to your executable path, or create a symlink
 
 Note: don't just copy ```rtlxgen```, it needs to be in the same directory as ```rtlx.Makefile``` and ```cssjanus```.
 
-Make sure you have all the required dependencies; ImageMagick, pyhton, GNU make, watch, find and sed. On Debian and Ubuntu do something like:
+Make sure you have all the required dependencies; GraphicsMagick, pyhton, GNU make, watch, find and sed. On Debian and Ubuntu do something like:
 
-    sudo apt-get install imagemagick python-minimal make procps findutils sed
+    sudo apt-get install graphicsmagick python-minimal make procps findutils sed
 
 #### Suggested usage
 For each Drupal 7 installation copy the rtlx directory into your modules directory and enable the RTLx module.
@@ -37,14 +37,13 @@ A modified version of [CSSJanus][2] is used by ```rtlxgen``` to create RTL style
 If you want to exclude some CSS from RTL conversion CSSJanus supports a ```/* @noflip */``` annotation which can be added before a specific rule or property.
 
 #### Images
-[ImageMagick][3]'s ```convert``` is used by ```rtlxgen``` to create horizontally flipped images for CSS backgrounds. The resulting files have -rtlx added to their name.
+GraphicsMagick's ```gm convert``` is used by ```rtlxgen``` to create horizontally flipped images for CSS backgrounds. The resulting files have -rtlx added to their name.
 
 #### Javascript
-IE8 does not support the [4-value background-position syntax][4], which makes it impossible to flip CSS background positions with unit lengths without knowing the HTML element's dimensions. To work around this limitation the RTLx module includes IE8-specific javascript which measures and flips CSS background-positions after page load. This is not a perfect solution, and things can go wrong if an element's width is changed dynamically.
+IE8 does not support the [4-value background-position syntax][3], which makes it impossible to flip CSS background positions with unit lengths without knowing the HTML element's dimensions. To work around this limitation the RTLx module includes IE8-specific javascript which measures and flips CSS background-positions after page load. This is not a perfect solution, and things can go wrong if an element's width is changed dynamically.
 
 RTLx javascript also overrides jQuery's ```css()``` and ```animate()``` methods and swaps 'left' and 'right' strings in property names and values. Again, not perfect, but works most of the time for code which uses Drupal's copy of jQuery.
 
 [1]:http://linux.die.net/man/1/watch
 [2]:https://code.google.com/p/cssjanus/
-[3]:http://www.imagemagick.org/
-[4]:https://developer.mozilla.org/en/docs/CSS/background-position
+[3]:https://developer.mozilla.org/en/docs/CSS/background-position
