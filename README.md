@@ -1,6 +1,6 @@
 # Drupal RTL toolkit
 
-Fully automated RTL (right-to-left) language support.
+Fully automated RTL (right-to-left) language support for Drupal 7.
 
 #### Installation
 
