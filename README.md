@@ -37,7 +37,7 @@ A modified version of [CSSJanus][2] is used by ```rtlxgen``` to create RTL style
 If you want to exclude some CSS from RTL conversion CSSJanus supports a ```/* @noflip */``` annotation which can be added before a specific rule or property.
 
 #### Images
-[ImageMagick][3]'s ```convert``` is used by ```rtlxgen``` to create horizontally flipped images for CSS backgrounds. They are saved as *original_name*-rtlx.*ext* files.
+[ImageMagick][3]'s ```convert``` is used by ```rtlxgen``` to create horizontally flipped images for CSS backgrounds. The resulting files have -rtlx added to their name.
 
 #### Javascript
 IE8 does not support the [4-value background-position syntax][4], which makes it impossible to flip CSS background positions with unit lengths without knowing the HTML element's dimensions. To work around this limitation the RTLx module includes IE8-specific javascript which measures and flips CSS background-positions after page load. This is not a perfect solution, and things can go wrong if an element's width is changed dynamically.
