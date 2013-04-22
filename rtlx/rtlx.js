@@ -2,17 +2,17 @@
     "use strict";
     var originalCss, originalAnimate;
 
+    // Hook jQuery's css function
+    originalCss = $.fn.css;
+    $.fn.css = cssOverride;
+    originalAnimate = $.fn.animate;
+    $.fn.animate = animateOverride;
+
     $(function() {
         // IE8 doesn't support 4-value background positions, so we have to measure and flip in realtime using javascript.
         if($.browser.msie && ($.browser.version.indexOf("8.") == 0)) {
             setTimeout(function(){ flipBg($("*")); }, 200);
         }
-
-        // Hook jQuery's css function
-        originalCss = $.fn.css;
-        $.fn.css = cssOverride;
-        originalAnimate = $.fn.animate;
-        $.fn.animate = animateOverride;
     });
 
     function flipBg(sel) {
