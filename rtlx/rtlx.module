@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * You may notice some duplicate logic here.
+ *
+ * Some themes (like Seven) add CSS files in their own hook_css_alter(). Such (theme) hooks are
+ * always called *after* module hooks, so rtlx_process_html is needed to override their stylesheets.
+ *
+ * Some other themes will define their own hook_process_html and regenerate CSS styles usually using
+ * calls to drupal_add_css() and drupal_get_css(). In those cases we rely on rtlx_css_alter() and
+ * hope that the theme in question won't add any stylesheets. :(
+ *
+ * This isn't foolproof, but it's the best I can come up with atm.
+ */
+
+function rtlx_css_alter(&$css) {
+  global $language;
+  if ($language->direction == LANGUAGE_RTL) {
+    foreach ($css as $key => $item) {
+      if ($item['type'] == 'file') {
+        if (strpos($item['data'], '-rtl.css') !== FALSE) {
+          // Remove locale.module's -rtl.css overrides.
+          unset($css[$key]);
+        } else {
+          // Replace LTR stylesheets with -rtlx.css versions.
+          $css[$key]['data'] = preg_replace('/\.css$/', '-rtlx.css', $item['data']);
+        }
+      }
+    }
+  }
+}
+
+function rtlx_process_html(&$vars) {
+  global $language;
+  if ($language->direction == LANGUAGE_RTL) {
+    $css = drupal_add_css();
+    // Allow modules and themes to alter the CSS items.
+    drupal_alter('css', $css);
+    // Now do our rtl postprocessing.
+    foreach ($css as $key => $item) {
+      if ($item['type'] == 'file') {
+        // Skip files that have already been processed by rtlx_css_alter()
+        if (strpos($item['data'], '-rtlx.css') === FALSE) {
+          // Replace LTR stylesheets with -rtlx.css versions.
+          $css[$key]['data'] = preg_replace('/\.css$/', '-rtlx.css', $item['data']);
+        }
+      }
+    }
+    $vars['styles'] = drupal_get_css($css, TRUE); // Skip alter hooks.
+  }
+}
+
+function rtlx_init() {
+  global $language;
+  if($language->direction == LANGUAGE_RTL) {
+    drupal_add_js(drupal_get_path('module', 'rtlx') . '/rtlx.js', array('type' => 'file', 'weight' => -100, 'group' => JS_LIBRARY));
+  }
+}

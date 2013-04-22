@@ -1,0 +1,15 @@
+#!/bin/bash
+
+E_BADARGS=65
+
+if [ $# -ne 1 ]
+then
+  echo "Usage: `basename $0` <PATH>"
+  echo "Generates rtlx versions for all CSS and image files under PATH (recursively)."
+  exit $E_BADARGS
+fi
+
+SCRIPT="$(readlink -e ${BASH_SOURCE[0]})"
+DIR="$(dirname "$SCRIPT")"
+
+make -f "$DIR/rtlx.Makefile" CSSJANUS="$DIR/cssjanus/cssjanus.py" TARGET_PATH="$1"

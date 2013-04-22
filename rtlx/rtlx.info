@@ -1,0 +1,5 @@
+name = RTLx
+description = "Use replacement RTL stylesheets (-rtlx.css files) instead of Locale module's added -rtl.css ones."
+core = 7.x
+package = Multilingual
+dependencies[] = locale

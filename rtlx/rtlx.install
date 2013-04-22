@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function rtlx_install() {
+  // Try to run last (after all other css alterations are done).
+  db_update('system')
+    ->fields(array('weight' => 10000))
+    ->condition('type', 'module')
+    ->condition('name', 'RTLx')
+    ->execute();
+}
