@@ -68,17 +68,8 @@
                                  });
     }
 
-    function flipPropName(name) {
-        var ret = swaplr(name);
-        console.log("name: ", name, ret);
-        return ret;
-    }
-
-    function flipPropValue(value) {
-        var ret = swaplr(value);
-        console.log("value: ", value, ret);
-        return ret;
-    }
+    var flipPropName = swaplr;
+    var flipPropValue = swaplr;
 
     function flipCssObject(obj) {
         var ret = {};
