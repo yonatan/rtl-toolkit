@@ -159,63 +159,72 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/left-bar.png)']
     shouldbe = ['background: url(/foo/left-bar.png)']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['url("http://www.blogger.com/img/triangle_ltr.gif")']
     shouldbe = ['url("http://www.blogger.com/img/triangle_ltr.gif")']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ["url('http://www.blogger.com/img/triangle_ltr.gif')"]
     shouldbe = ["url('http://www.blogger.com/img/triangle_ltr.gif')"]
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ["url('http://www.blogger.com/img/triangle_ltr.gif'  )"]
     shouldbe = ["url('http://www.blogger.com/img/triangle_ltr.gif'  )"]
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar.left.png)']
     shouldbe = ['background: url(/foo/bar.left.png)']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar-rtl.png)']
     shouldbe = ['background: url(/foo/bar-rtl.png)']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar-rtl.png); left: 10px']
     shouldbe = ['background: url(/foo/bar-rtl.png); right: 10px']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar-right.png); direction: ltr']
     shouldbe = ['background: url(/foo/bar-right.png); direction: ltr']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar-rtl_right.png);'
                 'left:10px; direction: ltr']
@@ -224,7 +233,8 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
   def testUrlWithFlagOn(self):
     swap_ltr_rtl_in_url = True
@@ -235,70 +245,80 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/left-bar.png)']
     shouldbe = ['background: url(/foo/right-bar.png)']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['url("http://www.blogger.com/img/triangle_ltr.gif")']
     shouldbe = ['url("http://www.blogger.com/img/triangle_rtl.gif")']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ["url('http://www.blogger.com/img/triangle_ltr.gif')"]
     shouldbe = ["url('http://www.blogger.com/img/triangle_rtl.gif')"]
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ["url('http://www.blogger.com/img/triangle_ltr.gif'  )"]
     shouldbe = ["url('http://www.blogger.com/img/triangle_rtl.gif'  )"]
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar.left.png)']
     shouldbe = ['background: url(/foo/bar.right.png)']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bright.png)']
     shouldbe = ['background: url(/foo/bright.png)']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar-rtl.png)']
     shouldbe = ['background: url(/foo/bar-ltr.png)']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar-rtl.png); left: 10px']
     shouldbe = ['background: url(/foo/bar-ltr.png); right: 10px']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar-right.png); direction: ltr']
     shouldbe = ['background: url(/foo/bar-left.png); direction: ltr']
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
     testcase = ['background: url(/foo/bar-rtl_right.png);'
                 'left:10px; direction: ltr']
@@ -307,7 +327,8 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe,
                      cssjanus.ChangeLeftToRightToLeft(testcase,
                                                       swap_ltr_rtl_in_url,
-                                                      swap_left_right_in_url))
+                                                      swap_left_right_in_url,
+                                                      False))
 
   def testPadding(self):
     testcase = ['padding-right: bar']
@@ -363,11 +384,11 @@ class CSSJANUSUnitTest(unittest.TestCase):
 
   def testBGPosition(self):
     testcase = ['background: url(/foo/bar.png) top left']
-    shouldbe = ['background: url(/foo/bar.png) top right']
+    shouldbe = ['background: url(/foo/bar-rtlx.png) top right']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['background: url(/foo/bar.png) top right']
-    shouldbe = ['background: url(/foo/bar.png) top left']
+    shouldbe = ['background: url(/foo/bar-rtlx.png) top left']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['background-position: top left']
@@ -404,7 +425,7 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['background:url(../foo-bar_baz.2008.gif) no-repeat 75% 50%']
-    shouldbe = ['background:url(../foo-bar_baz.2008.gif) no-repeat 25% 50%']
+    shouldbe = ['background:url(../foo-bar_baz.2008-rtlx.gif) no-repeat 25% 50%']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['.test { background: 10% 20% } .test2 { background: 40% 30% }']
@@ -421,11 +442,19 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['background: #45454A url("/foo/bar.png") no-repeat 145px 6px']
-    shouldbe = ['background: #45454A url("/foo/bar.png") no-repeat 145px 6px;background-position:right 145px top 6px']
+    shouldbe = ['background: #45454A url("/foo/bar-rtlx.png") no-repeat 145px 6px;background-position:right 145px top 6px']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['background-position: 1px 2px']
     shouldbe = ['background-position: 1px 2px;background-position:right 1px top 2px']
+    self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
+
+    testcase = ['background-position: 1px center']
+    shouldbe = ['background-position: 1px center;background-position:right 1px top 50%']
+    self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
+
+    testcase = ['background-position: 1px top']
+    shouldbe = ['background-position: 1px top;background-position:right 1px top 0%']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
   def testDirectionalClassnames(self):
