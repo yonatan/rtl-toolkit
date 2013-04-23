@@ -32,9 +32,11 @@ logging.getLogger().setLevel(logging.INFO)
 # Global for the command line flags.
 SWAP_LTR_RTL_IN_URL_DEFAULT = False
 SWAP_LEFT_RIGHT_IN_URL_DEFAULT = False
+ADD_RTLX_IN_URL_DEFAULT = True
 IGNORE_BAD_BGP_DEFAULT = False
 FLAGS = {'swap_ltr_rtl_in_url': SWAP_LTR_RTL_IN_URL_DEFAULT,
          'swap_left_right_in_url': SWAP_LEFT_RIGHT_IN_URL_DEFAULT,
+         'add_rtlx_in_url': ADD_RTLX_IN_URL_DEFAULT,
          'ignore_bad_bgp': IGNORE_BAD_BGP_DEFAULT}
 
 # Generic token delimiter character.
@@ -661,7 +663,8 @@ def CalculateNewBackgroundLengthPosition(m):
     return 'background%s%s%s100%%%s%s' % (position_string, m.group(2), m.group(3),
                                           m.group(5), m.group(7))
   else:
-    return '%s;background-position:right %s top%s' % (m.group(0), m.group(4), m.group(5))
+    top_offset = m.group(5).replace('top', '0%').replace('center', '50%').replace('bottom', '100%')
+    return '%s;background-position:right %s top%s' % (m.group(0), m.group(4), top_offset)
 
 def CalculateNewBackgroundLengthPositionX(m):
   """Fixes background-position-x lengths.
@@ -690,7 +693,8 @@ def CalculateNewBackgroundLengthPositionX(m):
 
 def ChangeLeftToRightToLeft(lines,
                             swap_ltr_rtl_in_url=None,
-                            swap_left_right_in_url=None):
+                            swap_left_right_in_url=None,
+                            add_rtlx_in_url=None):
   """Turns lines into a stream and runs the fixing functions against it.
 
   Args:
@@ -712,6 +716,10 @@ def ChangeLeftToRightToLeft(lines,
     swap_ltr_rtl_in_url = FLAGS['swap_ltr_rtl_in_url']
   if swap_left_right_in_url is None:
     swap_left_right_in_url = FLAGS['swap_left_right_in_url']
+  if swap_left_right_in_url is None:
+    swap_left_right_in_url = FLAGS['swap_left_right_in_url']
+  if add_rtlx_in_url is None:
+    add_rtlx_in_url = FLAGS['add_rtlx_in_url']
 
   # Turns the array of lines into a single line stream.
   logging.debug('LINES COUNT: %s' % len(lines))
@@ -742,7 +750,8 @@ def ChangeLeftToRightToLeft(lines,
   if swap_ltr_rtl_in_url:
     line = FixLtrAndRtlInUrl(line)
 
-  line = FixImageUrl(line)
+  if add_rtlx_in_url:
+    line = FixImageUrl(line)
 
   line = FixLeftAndRight(line)
   line = FixCursorProperties(line)
