@@ -11,7 +11,7 @@ css: $(RTLX_CSS_FILES)
 images: $(RTLX_IMG_FILES)
 
 %-rtlx.css: %.css
-	cat "$<" | python "$(CSSJANUS)" --ignore_bad_bgp >> "$@"
+	cat "$<" | python "$(CSSJANUS)" > "$@"
 
 %-rtlx.jpg: %.jpg
 	gm convert -flop "$<" "$@"

@@ -33,7 +33,7 @@ logging.getLogger().setLevel(logging.INFO)
 SWAP_LTR_RTL_IN_URL_DEFAULT = False
 SWAP_LEFT_RIGHT_IN_URL_DEFAULT = False
 ADD_RTLX_IN_URL_DEFAULT = True
-IGNORE_BAD_BGP_DEFAULT = False
+IGNORE_BAD_BGP_DEFAULT = True
 FLAGS = {'swap_ltr_rtl_in_url': SWAP_LTR_RTL_IN_URL_DEFAULT,
          'swap_left_right_in_url': SWAP_LEFT_RIGHT_IN_URL_DEFAULT,
          'add_rtlx_in_url': ADD_RTLX_IN_URL_DEFAULT,
