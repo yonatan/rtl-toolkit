@@ -1,6 +1,6 @@
 # Drupal RTL toolkit
 
-This is an attempt at a *fully* automated RTL (right-to-left) language solution for Drupal 7. It includes ```rtlxgen```, a script which creates RTL CSS and images for an entire site (core, modules and themes), and a module which loads the generated CSS and includes some javascript hacks to convert css set at runtime with jQuery's css() and animate() methods.
+This is an attempt at a *fully* automated RTL (right-to-left) language solution for Drupal 7. It includes ```rtlxgen```, a script which creates RTL CSS and images for an entire site (core, modules and themes), and a module which loads the generated CSS and includes some javascript hacks to convert styles set at runtime with jQuery's css() and animate() methods.
 
 #### Installation
 
