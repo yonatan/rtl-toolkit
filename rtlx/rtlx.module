@@ -33,7 +33,8 @@ function rtlx_css_alter(&$css) {
 function rtlx_process_html(&$vars) {
   global $language;
   if ($language->direction == LANGUAGE_RTL) {
-    $css = drupal_add_css();
+    // Set default background-position to top-right for all elements.
+    $css = drupal_add_css('* { background-position: 100% 0%; }', array('type' => 'inline', 'group' => -9999, 'preprocess' => FALSE));
     // Allow modules and themes to alter the CSS items.
     drupal_alter('css', $css);
     // Now do our rtl postprocessing.
