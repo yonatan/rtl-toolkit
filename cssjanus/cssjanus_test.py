@@ -579,5 +579,10 @@ class CSSJANUSUnitTest(unittest.TestCase):
     shouldbe = ['background-image: -webkit-gradient(linear, 100% 0%, 0% 0%, from(#666666), to(#ffffff))']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
+  def testImport(self):
+    testcase = ['@import url(foo.css)']
+    shouldbe = ['@import url(foo-rtlx.css)']
+    self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
+
 if __name__ == '__main__':
   unittest.main()
