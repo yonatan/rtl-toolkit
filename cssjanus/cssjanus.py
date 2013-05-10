@@ -408,13 +408,13 @@ def FixLeftAndRight(line):
   logging.debug('FixLeftAndRight returns: %s' % line)
   return line
 
-IMAGE_EXTENSION = '(?:png|jpg|jpeg|gif)'
-IMAGE_EXTENSION_IN_URL_RE = re.compile('(\.%s[^\.]*\))' % (IMAGE_EXTENSION),
-                                       re.I)
+INVERTABLE_EXTENSION = '(?:png|jpg|jpeg|gif|css)'
+INVERTABLE_EXTENSION_IN_URL_RE = re.compile('(\.%s[^\.]*\))' % (INVERTABLE_EXTENSION),
+                                            re.I)
 
-def FixImageUrl(line):
+def FixUrlExtension(line):
   """Adds -rtlx to filenames in urls."""
-  line = IMAGE_EXTENSION_IN_URL_RE.sub('-rtlx\\1', line)
+  line = INVERTABLE_EXTENSION_IN_URL_RE.sub('-rtlx\\1', line)
   return line
 
 def FixLeftAndRightInUrl(line):
@@ -751,7 +751,7 @@ def ChangeLeftToRightToLeft(lines,
     line = FixLtrAndRtlInUrl(line)
 
   if add_rtlx_in_url:
-    line = FixImageUrl(line)
+    line = FixUrlExtension(line)
 
   line = FixLeftAndRight(line)
   line = FixCursorProperties(line)
