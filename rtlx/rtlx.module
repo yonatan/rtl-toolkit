@@ -17,7 +17,8 @@ function rtlx_css_alter(&$css) {
   global $language;
   if ($language->direction == LANGUAGE_RTL) {
     foreach ($css as $key => $item) {
-      if ($item['type'] == 'file') {
+      // Make sure we're dealing with an ordinary, static file.
+      if ($item['type'] == 'file' && strpos($item['data'], '//') === FALSE) {
         if (strpos($item['data'], '-rtl.css') !== FALSE) {
           // Remove locale.module's -rtl.css overrides.
           unset($css[$key]);
@@ -39,7 +40,8 @@ function rtlx_process_html(&$vars) {
     drupal_alter('css', $css);
     // Now do our rtl postprocessing.
     foreach ($css as $key => $item) {
-      if ($item['type'] == 'file') {
+      // Make sure we're dealing with an ordinary, static file.
+      if ($item['type'] == 'file' && strpos($item['data'], '//') === FALSE) {
         // Skip files that have already been processed by rtlx_css_alter()
         if (strpos($item['data'], '-rtlx.css') === FALSE) {
           // Replace LTR stylesheets with -rtlx.css versions.
