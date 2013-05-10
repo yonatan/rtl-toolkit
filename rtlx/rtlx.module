@@ -34,15 +34,17 @@ function rtlx_css_alter(&$css) {
 function rtlx_process_html(&$vars) {
   global $language;
   if ($language->direction == LANGUAGE_RTL) {
-    // Set default background-position to top-right for all elements.
-    $css = drupal_add_css('* { background-position: 100% 0%; }', array('type' => 'inline', 'group' => -9999, 'preprocess' => FALSE));
+    // Set default background-position to top-right for all elements, and add html direction in
+    // case some theme (bootstrap) doesn't include Drupal's default 'dir="rtl"' html attribute.
+    $default_css = 'html { direction: rtl; } * { background-position: 100% 0%; }';
+    $css = drupal_add_css($default_css, array('type' => 'inline', 'group' => -9999, 'preprocess' => FALSE));
     // Allow modules and themes to alter the CSS items.
     drupal_alter('css', $css);
     // Now do our rtl postprocessing.
     foreach ($css as $key => $item) {
       // Make sure we're dealing with an ordinary, static file.
       if ($item['type'] == 'file' && strpos($item['data'], '//') === FALSE) {
-        // Skip files that have already been processed by rtlx_css_alter()
+        // Skip files that have already been processed by rtlx_css_alter().
         if (strpos($item['data'], '-rtlx.css') === FALSE) {
           // Replace LTR stylesheets with -rtlx.css versions.
           $css[$key]['data'] = preg_replace('/\.css$/', '-rtlx.css', $item['data']);
