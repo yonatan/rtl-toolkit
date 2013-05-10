@@ -30,13 +30,9 @@ import csslex
 logging.getLogger().setLevel(logging.INFO)
 
 # Global for the command line flags.
-SWAP_LTR_RTL_IN_URL_DEFAULT = False
-SWAP_LEFT_RIGHT_IN_URL_DEFAULT = False
 ADD_RTLX_IN_URL_DEFAULT = True
 IGNORE_BAD_BGP_DEFAULT = True
-FLAGS = {'swap_ltr_rtl_in_url': SWAP_LTR_RTL_IN_URL_DEFAULT,
-         'swap_left_right_in_url': SWAP_LEFT_RIGHT_IN_URL_DEFAULT,
-         'add_rtlx_in_url': ADD_RTLX_IN_URL_DEFAULT,
+FLAGS = {'add_rtlx_in_url': ADD_RTLX_IN_URL_DEFAULT,
          'ignore_bad_bgp': IGNORE_BAD_BGP_DEFAULT}
 
 # Generic token delimiter character.
@@ -209,9 +205,7 @@ DIRECTION_RTL_RE = re.compile(r'%s(rtl)' % DIRECTION_RE)
 
 # We want to be able to switch left with right and vice versa anywhere
 # we encounter left/right strings, EXCEPT inside the background:url(). The next
-# two regexes are for that purpose. We have alternate IN_URL versions of the
-# regexes compiled in case the user passes the flag that they do
-# actually want to have left and right swapped inside of background:urls.
+# two regexes are for that purpose.
 LEFT_RE = re.compile('%s((?:top|bottom)?)(%s)%s%s' % (LOOKBEHIND_NOT_LETTER,
                                                       LEFT,
                                                       LOOKAHEAD_NOT_CLOSING_PAREN,
@@ -222,22 +216,6 @@ RIGHT_RE = re.compile('%s((?:top|bottom)?)(%s)%s%s' % (LOOKBEHIND_NOT_LETTER,
                                                        LOOKAHEAD_NOT_CLOSING_PAREN,
                                                        LOOKAHEAD_NOT_OPEN_BRACE),
                       re.I)
-LEFT_IN_URL_RE = re.compile('%s(%s)%s' % (LOOKBEHIND_NOT_LETTER,
-                                          LEFT,
-                                          LOOKAHEAD_FOR_CLOSING_PAREN),
-                            re.I)
-RIGHT_IN_URL_RE = re.compile('%s(%s)%s' % (LOOKBEHIND_NOT_LETTER,
-                                           RIGHT,
-                                           LOOKAHEAD_FOR_CLOSING_PAREN),
-                             re.I)
-LTR_IN_URL_RE = re.compile('%s(%s)%s' % (LOOKBEHIND_NOT_LETTER,
-                                         LTR,
-                                         LOOKAHEAD_FOR_CLOSING_PAREN),
-                           re.I)
-RTL_IN_URL_RE = re.compile('%s(%s)%s' % (LOOKBEHIND_NOT_LETTER,
-                                         RTL,
-                                         LOOKAHEAD_FOR_CLOSING_PAREN),
-                           re.I)
 
 COMMENT_RE = re.compile('(%s)' % csslex.COMMENT, re.I)
 
@@ -416,44 +394,6 @@ def FixUrlExtension(line):
   """Adds -rtlx to filenames in urls."""
   line = INVERTABLE_EXTENSION_IN_URL_RE.sub('-rtlx\\1', line)
   return line
-
-def FixLeftAndRightInUrl(line):
-  """Replaces left with right and vice versa ONLY within background urls.
-
-  Args:
-    line: A string in which to replace left with right and vice versa.
-
-  Returns:
-    line with left and right swapped in the url string. For example:
-    line = FixLeftAndRightInUrl('background:url(right.png)')
-    line will now be 'background:url(left.png)'.
-  """
-
-  line = LEFT_IN_URL_RE.sub(TMP_TOKEN, line)
-  line = RIGHT_IN_URL_RE.sub(LEFT, line)
-  line = line.replace(TMP_TOKEN, RIGHT)
-  logging.debug('FixLeftAndRightInUrl returns: %s' % line)
-  return line
-
-
-def FixLtrAndRtlInUrl(line):
-  """Replaces ltr with rtl and vice versa ONLY within background urls.
-
-  Args:
-    line: A string in which to replace ltr with rtl and vice versa.
-
-  Returns:
-    line with left and right swapped. For example:
-    line = FixLtrAndRtlInUrl('background:url(rtl.png)')
-    line will now be 'background:url(ltr.png)'.
-  """
-
-  line = LTR_IN_URL_RE.sub(TMP_TOKEN, line)
-  line = RTL_IN_URL_RE.sub(LTR, line)
-  line = line.replace(TMP_TOKEN, RTL)
-  logging.debug('FixLtrAndRtlInUrl returns: %s' % line)
-  return line
-
 
 def FixCursorProperties(line):
   """Fixes directional CSS cursor properties.
@@ -692,15 +632,12 @@ def CalculateNewBackgroundLengthPositionX(m):
 
 
 def ChangeLeftToRightToLeft(lines,
-                            swap_ltr_rtl_in_url=None,
-                            swap_left_right_in_url=None,
                             add_rtlx_in_url=None):
   """Turns lines into a stream and runs the fixing functions against it.
 
   Args:
     lines: An list of CSS lines.
-    swap_ltr_rtl_in_url: Overrides this flag if param is set.
-    swap_left_right_in_url: Overrides this flag if param is set.
+    add_rtlx_in_url: Overrides this flag if param is set.
 
   Returns:
     The same lines, but with left and right fixes.
@@ -709,15 +646,7 @@ def ChangeLeftToRightToLeft(lines,
   global FLAGS
 
   # Possibly override flags with params.
-  logging.debug('ChangeLeftToRightToLeft swap_ltr_rtl_in_url=%s, '
-                'swap_left_right_in_url=%s' % (swap_ltr_rtl_in_url,
-                                               swap_left_right_in_url))
-  if swap_ltr_rtl_in_url is None:
-    swap_ltr_rtl_in_url = FLAGS['swap_ltr_rtl_in_url']
-  if swap_left_right_in_url is None:
-    swap_left_right_in_url = FLAGS['swap_left_right_in_url']
-  if swap_left_right_in_url is None:
-    swap_left_right_in_url = FLAGS['swap_left_right_in_url']
+  logging.debug('ChangeLeftToRightToLeft add_rtlx_in_url=%s, ' % (add_rtlx_in_url))
   if add_rtlx_in_url is None:
     add_rtlx_in_url = FLAGS['add_rtlx_in_url']
 
@@ -743,12 +672,6 @@ def ChangeLeftToRightToLeft(lines,
 
   # Here starteth the various left/right orientation fixes.
   line = FixBodyDirectionLtrAndRtl(line)
-
-  if swap_left_right_in_url:
-    line = FixLeftAndRightInUrl(line)
-
-  if swap_ltr_rtl_in_url:
-    line = FixLtrAndRtlInUrl(line)
 
   if add_rtlx_in_url:
     line = FixUrlExtension(line)
@@ -787,10 +710,6 @@ def usage():
   print 'Usage:'
   print '  ./cssjanus.py < file.css > file-rtl.css'
   print 'Flags:'
-  print '  --swap_left_right_in_url: Fixes "left"/"right" string within urls.'
-  print '  Ex: ./cssjanus.py --swap_left_right_in_url < file.css > file_rtl.css'
-  print '  --swap_ltr_rtl_in_url: Fixes "ltr"/"rtl" string within urls.'
-  print '  Ex: ./cssjanus.py --swap_ltr_rtl_in_url < file.css > file_rtl.css'
   print '  --ignore_bad_bgp: Ignores unmirrorable background-position values.'
   print '  Ex: ./cssjanus.py --ignore_bad_bgp < file.css > file_rtl.css'
 
@@ -811,10 +730,6 @@ def setflags(opts):
       sys.exit()
     elif opt in ("-d", "--debug"):
       logging.getLogger().setLevel(logging.DEBUG)
-    elif opt == '--swap_ltr_rtl_in_url':
-      FLAGS['swap_ltr_rtl_in_url'] = True
-    elif opt == '--swap_left_right_in_url':
-      FLAGS['swap_left_right_in_url'] = True
     elif opt == '--ignore_bad_bgp':
       FLAGS['ignore_bad_bgp'] = True
 
@@ -825,8 +740,7 @@ def main(argv):
   # Define the flags.
   try:
     opts, args = getopt.getopt(argv, 'hd', ['help', 'debug',
-                                            'swap_left_right_in_url',
-                                            'swap_ltr_rtl_in_url',
+                                            'add_rtlx_in_url',
                                             'ignore_bad_bgp'])
   except getopt.GetoptError:
     usage()
