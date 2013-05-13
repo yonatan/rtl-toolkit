@@ -162,10 +162,11 @@ CHARS_WITHIN_STYLE = r'[^;\}]*'
 # Matches background, background-position, and background-position-x
 # properties when using a CSS length for its horizontal positioning.
 BG_HORIZONTAL_LENGTH_RE = re.compile(r'background(-position)?(%s:%s)'
-                                     '((?:.+?%s+)??)(%s)'
+                                     '((?:%s?%s+)??)(%s)'
                                      '((?:%s+)(?:%s|top|center|bottom))'
                                      '(%s)'% (csslex.WHITESPACE,
                                               csslex.WHITESPACE,
+                                              CHARS_WITHIN_STYLE,
                                               csslex.SPACE,
                                               LENGTH,
                                               csslex.SPACE,
