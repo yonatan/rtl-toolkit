@@ -262,6 +262,10 @@ class CSSJANUSUnitTest(unittest.TestCase):
     shouldbe = ['background-position: top left']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
+    testcase = ['background:#ffffff; margin:0 0 30px 0;']
+    shouldbe = ['background:#ffffff; margin:0 0 30px 0;']
+    self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
+
   def testBGPositionPercentage(self):
     testcase = ['background-position: 100% 40%']
     shouldbe = ['background-position: 0% 40%']
