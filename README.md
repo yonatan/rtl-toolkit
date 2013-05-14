@@ -14,11 +14,11 @@ You might want to add ```rtlxgen``` to your executable path, or create a symlink
 
     ln -s /full/path/to/your/rtlxgen /usr/local/bin/rtlxgen
 
-Note: don't just copy ```rtlxgen```, it needs to be in the same directory as ```rtlx.Makefile``` and ```cssjanus```.
+Note: don't just copy ```rtlxgen```, it needs to be in the same directory as ```cssjanus```.
 
-Make sure you have all the required dependencies; GraphicsMagick, pyhton, GNU make, watch, find and sed. On Debian and Ubuntu do something like:
+Make sure you have all the required dependencies; GraphicsMagick, pyhton and watch. On Debian and Ubuntu do something like:
 
-    sudo apt-get install graphicsmagick python-minimal make procps findutils sed
+    sudo apt-get install graphicsmagick python-minimal procps
 
 #### Suggested usage
 For each Drupal 7 installation copy the rtlx directory into your modules directory and enable the RTLx module.
