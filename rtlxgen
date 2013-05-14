@@ -68,7 +68,6 @@ def main():
                 os.remove(fi.rtl_filename())
         else:
             if fi.rtl_exists and not fi.ltr_exists:
-                # Remove orphaned RTL files (ones without an LTR source)
                 if args.verbose: print "Removing orphaned RTL file '" + fi.rtl_filename() + "'"
                 os.remove(fi.rtl_filename())
             else:
