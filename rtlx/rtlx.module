@@ -36,7 +36,7 @@ function rtlx_process_html(&$vars) {
   if ($language->direction == LANGUAGE_RTL) {
     // Set default background-position to top-right for all elements, and add html direction in
     // case some theme (bootstrap) doesn't include Drupal's default 'dir="rtl"' html attribute.
-    $default_css = 'html { direction: rtl; } * { background-position: 100% 0%; }';
+    $default_css = 'html { direction: rtl; } * { background-position: right 0 top 0; }';
     $css = drupal_add_css($default_css, array('type' => 'inline', 'group' => -9999, 'preprocess' => FALSE));
     // Allow modules and themes to alter the CSS items.
     drupal_alter('css', $css);
