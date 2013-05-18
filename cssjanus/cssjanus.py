@@ -524,7 +524,7 @@ def CalculateNewBackgroundPosition(m):
   """
 
   # The flipped value is the offset from 100%
-  new_x = str(100-float(m.group(4)))
+  new_x = str(100-float(m.group(4))).rstrip("0").rstrip(".")
 
   # Since m.group(1) may very well be None type and we need a string..
   if m.group(1):
@@ -553,7 +553,7 @@ def CalculateNewBackgroundPositionX(m):
   """
 
   # The flipped value is the offset from 100%
-  new_x = str(100-float(m.group(2)))
+  new_x = str(100-float(m.group(2))).rstrip("0").rstrip(".")
 
   return 'background-position-x%s%s%%' % (m.group(1), new_x)
 
