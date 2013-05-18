@@ -324,6 +324,15 @@ class CSSJANUSUnitTest(unittest.TestCase):
     shouldbe = ['background-position: 1px top;background-position:right 1px top 0%']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
+  def testBGPositionDefault(self):
+    testcase = ['background: url(foo.jpg);']
+    shouldbe = ['background: url(foo-rtlx.jpg) 100% 0%;']
+    self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
+
+    testcase = ['background: url(foo.jpg) bottom;']
+    shouldbe = ['background: url(foo-rtlx.jpg) bottom;']
+    self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
+
   def testDirectionalClassnames(self):
     """Makes sure we don't unnecessarily destroy classnames with tokens in them.
 
