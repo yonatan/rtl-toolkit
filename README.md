@@ -6,9 +6,7 @@ This is an attempt at a *fully* automated RTL (right-to-left) language solution 
 
 For a live demo with several themes go to http://zozuar.org/rtldemo/
 
-After switching to one of the installed RTL languages you can enable/disable the RTLx module to compare this RTL system with Drupal's default.
-
-Note that the demo won't be updated frequently and may not reflect the latest changes in this codebase.
+After switching to one of the installed RTL languages you can enable/disable the RTLx module to compare this RTL system with Drupal's default. Note that the demo won't be updated frequently and may not reflect the latest changes in this codebase.
 
 #### Installation
 
