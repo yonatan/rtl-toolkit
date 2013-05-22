@@ -451,10 +451,11 @@ BACKGROUND_STYLE_RE = re.compile(r'background:%s' % (CHARS_WITHIN_STYLE))
 ANY_BACKGROUND_POSITION_RE = re.compile(r'.*(?<=[ \t\r\n\f:])(left|center|right|top|bottom|%s).*' % (csslex.QUANTITY))
 
 def AddDefaultBackgroundPosition(m):
-    if(ANY_BACKGROUND_POSITION_RE.search(m.group(0))):
-        return m.group(0)
-    else:
-        return m.group(0) + ';background-position:100% 0%'
+  """Adds a default RTL background-position style to backgrounds without position information."""
+  if(ANY_BACKGROUND_POSITION_RE.search(m.group(0))):
+    return m.group(0)
+  else:
+    return m.group(0) + ';background-position:100% 0%'
 
 def FixBackgroundPosition(line):
   """Fixes horizontal background values in line.
