@@ -2,6 +2,14 @@
 
 This is an attempt at a *fully* automated RTL (right-to-left) language solution for Drupal 7. It includes ```rtlxgen```, a script which creates RTL CSS and images for an entire site (core, modules and themes), and a module which loads the generated CSS and includes some javascript hacks to convert styles set at runtime with jQuery's ```css()``` and ```animate()``` methods.
 
+#### Demo
+
+For a live demo with several themes go to http://zozuar.org/rtldemo/
+
+After switching to one of the installed RTL languages you can enable/disable the RTLx module to compare this RTL system with Drupal's default.
+
+Note that the demo won't be updated frequently and may not reflect the latest changes in this codebase.
+
 #### Installation
 
 *This section is for development machines. Don't do this on your production server.*
@@ -28,6 +36,8 @@ When starting to work on a Drupal site, open a new shell and run:
     watch rtlxgen path/to/drupal/root
 
 The [watch][1] utility will run ```rtlxgen``` continuously in the background so whenever you edit a CSS file, add a new module, or update an image the corresponding rtlx files will be automatically generated.
+
+The first run may take a few minutes to create all the neccesary stylesheets and images, subsequent runs should be much faster. Run ```rtlxgen --help``` for more info.
 
 ## How it works
 
