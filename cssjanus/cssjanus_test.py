@@ -152,11 +152,11 @@ class CSSJANUSUnitTest(unittest.TestCase):
 
   def testUrlNoRtlx(self):
     testcase = ['background: url(/foo/bar-left.png)']
-    shouldbe = ['background: url(/foo/bar-left.png)']
+    shouldbe = ['background: url(/foo/bar-left.png);background-position:100% 0%']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
     testcase = ['background: url(/foo/left-bar.png)']
-    shouldbe = ['background: url(/foo/left-bar.png)']
+    shouldbe = ['background: url(/foo/left-bar.png);background-position:100% 0%']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
     testcase = ['url("http://www.blogger.com/img/triangle_ltr.gif")']
@@ -172,24 +172,24 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
     testcase = ['background: url(/foo/bar.left.png)']
-    shouldbe = ['background: url(/foo/bar.left.png)']
+    shouldbe = ['background: url(/foo/bar.left.png);background-position:100% 0%']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
     testcase = ['background: url(/foo/bar-rtl.png)']
-    shouldbe = ['background: url(/foo/bar-rtl.png)']
+    shouldbe = ['background: url(/foo/bar-rtl.png);background-position:100% 0%']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
     testcase = ['background: url(/foo/bar-rtl.png); left: 10px']
-    shouldbe = ['background: url(/foo/bar-rtl.png); right: 10px']
+    shouldbe = ['background: url(/foo/bar-rtl.png);background-position:100% 0%; right: 10px']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
     testcase = ['background: url(/foo/bar-right.png); direction: ltr']
-    shouldbe = ['background: url(/foo/bar-right.png); direction: ltr']
+    shouldbe = ['background: url(/foo/bar-right.png);background-position:100% 0%; direction: ltr']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
     testcase = ['background: url(/foo/bar-rtl_right.png);'
                 'left:10px; direction: ltr']
-    shouldbe = ['background: url(/foo/bar-rtl_right.png);'
+    shouldbe = ['background: url(/foo/bar-rtl_right.png);background-position:100% 0%;'
                 'right:10px; direction: ltr']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
@@ -263,7 +263,7 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['background:#ffffff; margin:0 0 30px 0;']
-    shouldbe = ['background:#ffffff; margin:0 0 30px 0;']
+    shouldbe = ['background:#ffffff;background-position:100% 0%; margin:0 0 30px 0;']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
   def testBGPositionPercentage(self):
@@ -326,7 +326,7 @@ class CSSJANUSUnitTest(unittest.TestCase):
 
   def testBGPositionDefault(self):
     testcase = ['background: url(foo.jpg);']
-    shouldbe = ['background: url(foo-rtlx.jpg) 100% 0%;']
+    shouldbe = ['background: url(foo-rtlx.jpg);background-position:100% 0%;']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['background: url(foo.jpg) bottom;']
@@ -371,11 +371,11 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['.thisclass .left .myclass {background:#fff;}']
-    shouldbe = ['.thisclass .left .myclass {background:#fff;}']
+    shouldbe = ['.thisclass .left .myclass {background:#fff;background-position:100% 0%;}']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['.thisclass .left .myclass #myid {background:#fff;}']
-    shouldbe = ['.thisclass .left .myclass #myid {background:#fff;}']
+    shouldbe = ['.thisclass .left .myclass #myid {background:#fff;background-position:100% 0%;}']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
 
