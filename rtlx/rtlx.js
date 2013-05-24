@@ -29,7 +29,7 @@
                         $e.css("background-position-x", "100%");
                     } else {
                         if(!isNaN(x)) {
-                            var url = $e.css("background-image").replace(/url\((['"]?)(.*?)\1\)/gi, '$2').split(',')[0];
+                            var url = $e.css("background-image").replace(/url\((['"]?)(.*?)\1\)/gi, '$2');
                             if(!images[url]) images[url] = [];
                             images[url].push(function(image) {
                                 var newx = $e.innerWidth() - image.width - x;
