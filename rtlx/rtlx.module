@@ -15,17 +15,12 @@
 
 function rtlx_css_alter(&$css) {
   global $language;
-  if ($language->direction == LANGUAGE_RTL) {
+  if ($language->real_direction == LANGUAGE_RTL) {
     foreach ($css as $key => $item) {
       // Make sure we're dealing with an ordinary, static file.
       if ($item['type'] == 'file' && strpos($item['data'], '//') === FALSE) {
-        if (strpos($item['data'], '-rtl.css') !== FALSE) {
-          // Remove locale.module's -rtl.css overrides.
-          unset($css[$key]);
-        } else {
-          // Replace LTR stylesheets with -rtlx.css versions.
-          $css[$key]['data'] = preg_replace('/\.css$/', '-rtlx.css', $item['data']);
-        }
+        // Replace LTR stylesheets with -rtlx.css versions.
+        $css[$key]['data'] = preg_replace('/\.css$/', '-rtlx.css', $item['data']);
       }
     }
   }
@@ -33,11 +28,8 @@ function rtlx_css_alter(&$css) {
 
 function rtlx_process_html(&$vars) {
   global $language;
-  if ($language->direction == LANGUAGE_RTL) {
-    // Set default background-position to top-right for all elements, and add html direction in
-    // case some theme (bootstrap) doesn't include Drupal's default 'dir="rtl"' html attribute.
-    $default_css = 'html { direction: rtl; } * { background-position: 100% 0%; }';
-    $css = drupal_add_css($default_css, array('type' => 'inline', 'group' => -9999, 'preprocess' => FALSE));
+  if ($language->real_direction == LANGUAGE_RTL) {
+    $css = drupal_add_css();
     // Allow modules and themes to alter the CSS items.
     drupal_alter('css', $css);
     // Now do our rtl postprocessing.
@@ -59,5 +51,11 @@ function rtlx_init() {
   global $language;
   if($language->direction == LANGUAGE_RTL) {
     drupal_add_js(drupal_get_path('module', 'rtlx') . '/rtlx.js', array('type' => 'file', 'weight' => -100, 'group' => JS_LIBRARY));
+    $default_css = 'html { direction: rtl; } * { background-position: 100% 0%; }';
+    drupal_add_css($default_css, array('type' => 'inline', 'group' => -9999, 'preprocess' => FALSE));
   }
+  // Save actual direction in $language->real_direction for other hooks (and any RTLx-aware modules).
+  $language->real_direction = $language->direction;
+  // Set $language->direction to LTR, to disable locale and other modules' RTL support.
+  $language->direction = LANGUAGE_LTR;
 }
