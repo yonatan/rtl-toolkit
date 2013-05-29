@@ -1,12 +1,19 @@
 (function($) {
     "use strict";
-    var originalCss, originalAnimate;
+    var originalCss, originalAnimate, originalOffset, originalPosition, originalScrollLeft;
 
     // Hook jQuery's css function
     originalCss = $.fn.css;
     $.fn.css = cssOverride;
     originalAnimate = $.fn.animate;
     $.fn.animate = animateOverride;
+    originalOffset = $.fn.offset;
+    $.fn.offset = offsetOverride;
+    originalScrollLeft = $.fn.scrollLeft;
+    $.fn.scrollLeft = scrollLeftOverride;
+    // TODO:
+    // originalPosition = $.fn.position;
+    // $.fn.position = positionOverride;
 
     $(function() {
         // IE8 doesn't support 4-value background positions, so we have to measure and flip in realtime using javascript.
@@ -100,4 +107,26 @@
         arguments[0] = flipCssObject(arguments[0]);
         return originalAnimate.apply(this, arguments);
     }
+
+    function offsetOverride() {
+        // Calling offset() without args should return the element's offset,  calling it with args
+        // should set it.
+        if(arguments.length == 0) {
+            // Return the offset of the right side of the element from the right side of the document.
+            var ret = originalOffset.apply(this, arguments);
+            // ret.left = $(window).width() - ret.left - this.outerWidth();
+            ret.left = $(window).width() - ret.left - this.outerWidth();
+            return ret;
+        } else {
+            // I think that when setting the offset jQuery uses it's (already overidden) css method,
+            // so there's nothing we need to do here.
+            return originalOffset.apply(this, arguments);
+        }
+    }
+
+    function scrollLeftOverride() {
+        if(arguments.length == 0) return -originalScrollLeft.apply(this, arguments);
+        else return originalScrollLeft.apply(this, arguments);
+    }
+
 })(jQuery);
