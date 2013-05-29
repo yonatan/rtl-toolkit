@@ -80,6 +80,9 @@ def main():
                         target.write(CSS_HEADER + ''.join(fixed_lines))
                         target.close()
                         source.close()
+                    elif fi.ext.lower() == ".gif":
+                        subprocess.call(["gm", "convert", "-coalesce",  fi.ltr_filename(), fi.rtl_filename()])
+                        subprocess.call(["gm", "mogrify", "-flop",  fi.rtl_filename()])
                     else:
                         subprocess.call(["gm", "convert", "-flop",  fi.ltr_filename(), fi.rtl_filename()])
 
