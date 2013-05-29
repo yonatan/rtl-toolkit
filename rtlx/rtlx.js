@@ -69,7 +69,10 @@
     }
 
     var flipPropName = swaplr;
-    var flipPropValue = swaplr;
+    function flipPropValue(val) {
+        if(typeof(val) === "string") return swaplr(val);
+        else return val;
+    }
 
     function flipCssObject(obj) {
         var ret = {};
