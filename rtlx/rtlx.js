@@ -75,23 +75,46 @@
                                  });
     }
 
-    var flipPropName = swaplr;
+    function flipPropName(name) {
+        if(name != "scrollLeft") return swaplr(name);
+        else return name;
+    }
+
     function flipPropValue(val) {
         if(typeof(val) === "string") return swaplr(val);
         else return val;
     }
 
+    function flipCssProperty(p, v) {
+        var ret = { p: flipPropName(p) };
+        if(p == "scrollLeft") {
+            if(typeof(v) === "string") {
+                if(v[0] == "+") ret.v = "-" + v.substr(1);
+                else if(v[0] == "-") ret.v = "+" + v.substr(1);
+                else ret.v = v;
+            } else {
+                ret.v = v;
+            }
+        } else {
+            ret.v = flipPropValue(v);
+        }
+        return ret;
+    }
+
     function flipCssObject(obj) {
         var ret = {};
         for(var p in obj) {
-            ret[flipPropName(p)] = flipPropValue(obj[p]);
+            var f = flipCssProperty(p, obj[p]);
+            ret[f.p] = f.v;
         }
         return ret;
     }
 
     function cssOverride() {
+        var f;
         if(arguments.length === 2) {
-            return originalCss.call(this, flipPropName(arguments[0]), flipPropValue(arguments[1])); 
+            f = flipCssProperty(arguments[0], arguments[1]);
+            return originalCss.call(this, f.p, f.v);
         } else if (arguments.length === 1) {
             if(typeof arguments[0] === "object") {
                 return originalCss.call(this, flipCssObject(arguments[0]));
