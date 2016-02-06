@@ -187,22 +187,11 @@ CHARS_WITHIN_SELECTOR = r'[^\}]*?'
 # Matches the direction property in a selector.
 DIRECTION_RE = r'direction%s:%s' % (csslex.WHITESPACE, csslex.WHITESPACE)
 
-# These allow us to swap "ltr" with "rtl" and vice versa ONLY within the
-# body selector and on the same line.
-BODY_DIRECTION_LTR_RE = re.compile(r'(%s)(%s)(%s)(ltr)' %
-                                   (BODY_SELECTOR, CHARS_WITHIN_SELECTOR,
-                                    DIRECTION_RE),
-                                   re.I)
-BODY_DIRECTION_RTL_RE = re.compile(r'(%s)(%s)(%s)(rtl)' %
-                                   (BODY_SELECTOR, CHARS_WITHIN_SELECTOR,
-                                    DIRECTION_RE),
-                                   re.I)
-
 
 # Allows us to swap "direction:ltr" with "direction:rtl" and
 # vice versa anywhere in a line.
-DIRECTION_LTR_RE = re.compile(r'%s(ltr)' % DIRECTION_RE)
-DIRECTION_RTL_RE = re.compile(r'%s(rtl)' % DIRECTION_RE)
+DIRECTION_LTR_RE = re.compile(r'(%s)(ltr)' % DIRECTION_RE)
+DIRECTION_RTL_RE = re.compile(r'(%s)(rtl)' % DIRECTION_RE)
 
 # We want to be able to switch left with right and vice versa anywhere
 # we encounter left/right strings, EXCEPT inside the background:url(). The next
@@ -350,25 +339,6 @@ class Tokenizer:
                           len(self.originals),
                           TOKEN_DELIMITER)
 
-
-def FixBodyDirectionLtrAndRtl(line):
-  """Replaces ltr with rtl and vice versa ONLY in the body direction.
-
-  Args:
-    line: A string to replace instances of ltr with rtl.
-  Returns:
-    line with direction: ltr and direction: rtl swapped only in body selector.
-    line = FixBodyDirectionLtrAndRtl('body { direction:ltr }')
-    line will now be 'body { direction:rtl }'.
-  """
-
-  line = BODY_DIRECTION_LTR_RE.sub('\\1\\2\\3%s' % TMP_TOKEN, line)
-  line = BODY_DIRECTION_RTL_RE.sub('\\1\\2\\3%s' % LTR, line)
-  line = line.replace(TMP_TOKEN, RTL)
-  logging.debug('FixBodyDirectionLtrAndRtl returns: %s' % line)
-  return line
-
-
 def FixLeftAndRight(line):
   """Replaces left with right and vice versa in line.
 
@@ -385,6 +355,24 @@ def FixLeftAndRight(line):
   line = RIGHT_RE.sub("\\1" + LEFT, line)
   line = line.replace(TMP_TOKEN, RIGHT)
   logging.debug('FixLeftAndRight returns: %s' % line)
+  return line
+
+def FixLtrAndRtl(line):
+  """Replaces ltr with rtl and vice versa in line.
+
+  Args:
+    line: A string in which to perform the replacement.
+
+  Returns:
+    line with ltr and rtl swapped. For example:
+    line = FixLtrAndRtl('direction: rtl;')
+    line will now be 'direction: ltr;'.
+  """
+
+  line = DIRECTION_LTR_RE.sub("\\1" + TMP_TOKEN, line)
+  line = DIRECTION_RTL_RE.sub("\\1" + LTR, line)
+  line = line.replace(TMP_TOKEN, RTL)
+  logging.debug('FixLtrAndRtl returns: %s' % line)
   return line
 
 INVERTABLE_EXTENSION = '(?:png|jpg|jpeg|gif|css)'
@@ -685,7 +673,8 @@ def ChangeLeftToRightToLeft(lines,
   line = gradient_tokenizer.Tokenize(line)
 
   # Here starteth the various left/right orientation fixes.
-  line = FixBodyDirectionLtrAndRtl(line)
+
+  line = FixLtrAndRtl(line)
 
   if add_rtlx_in_url:
     line = FixUrlExtension(line)

@@ -90,19 +90,19 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
   def testDirection(self):
-    # we don't want direction to be changed other than in body
+    # we do want direction to be changed other than in body
     testcase = ['direction: ltr']
-    shouldbe = ['direction: ltr']
-    self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
-
-    # we don't want direction to be changed other than in body
-    testcase = ['direction: rtl']
     shouldbe = ['direction: rtl']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
-    # we don't want direction to be changed other than in body
+    # we do want direction to be changed other than in body
+    testcase = ['direction: rtl']
+    shouldbe = ['direction: ltr']
+    self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
+
+    # we do want direction to be changed other than in body
     testcase = ['input { direction: ltr }']
-    shouldbe = ['input { direction: ltr }']
+    shouldbe = ['input { direction: rtl }']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['body { direction: ltr }']
@@ -114,7 +114,7 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['body { direction: ltr } .myClass { direction: ltr }']
-    shouldbe = ['body { direction: rtl } .myClass { direction: ltr }']
+    shouldbe = ['body { direction: rtl } .myClass { direction: rtl }']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
     testcase = ['body{\n direction: ltr\n}']
@@ -184,13 +184,13 @@ class CSSJANUSUnitTest(unittest.TestCase):
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
     testcase = ['background: url(/foo/bar-right.png); direction: ltr']
-    shouldbe = ['background: url(/foo/bar-right.png);background-position:100% 0%; direction: ltr']
+    shouldbe = ['background: url(/foo/bar-right.png);background-position:100% 0%; direction: rtl']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
     testcase = ['background: url(/foo/bar-rtl_right.png);'
                 'left:10px; direction: ltr']
     shouldbe = ['background: url(/foo/bar-rtl_right.png);background-position:100% 0%;'
-                'right:10px; direction: ltr']
+                'right:10px; direction: rtl']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase, False))
 
   def testPadding(self):
@@ -383,7 +383,7 @@ class CSSJANUSUnitTest(unittest.TestCase):
     testcase = ['body{direction:rtl;float:right}'
                 '.b2{direction:ltr;float:right}']
     shouldbe = ['body{direction:ltr;float:left}'
-                '.b2{direction:ltr;float:left}']
+                '.b2{direction:rtl;float:left}']
     self.assertEqual(shouldbe, cssjanus.ChangeLeftToRightToLeft(testcase))
 
   def testNoFlip(self):
